@@ -4,13 +4,14 @@
 
 - Discord アカウント
 - Google アカウント
-- 管理者から共有された Bot 招待リンク
+- 
 
 ## 1. Botをサーバーに入れる
 
 1. 招待リンクを開く
-2. 追加したいDiscordサーバーを選ぶ
-3. 承認する
+   サーバーの場合　https://discord.com/oauth2/authorize?client_id=1497556622568980491&permissions=8&integration_type=0&scope=bot+applications.commands
+3. 追加したいDiscordサーバーを選ぶ
+4. 承認する
 
 ## 2. テンプレートをコピーする
 
