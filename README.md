@@ -2,6 +2,7 @@
 
 Discord から Google カレンダーを確認・追加できる Bot です。  
 普段よく開く Discord 上で予定を扱えるようにしたアプリです。
+インストールについては [INSTALL_GUIDE.md](./INSTALL_GUIDE.md)　をご確認ください
 
 ## アプリ概要
 
