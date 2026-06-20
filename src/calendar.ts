@@ -35,13 +35,13 @@ export class CalendarService {
 
 
     }
-    public listUpcomingText(): string {
-        const events = this.eventsget({ days: 7, maxResults: 10 });
 
-        if (events.length === 0) {
-            return "予定はありません";
+    public todayslist(): string{
+        const events = this.eventsget({ days: 1, maxResults:10})
+
+        if(events.length === 0){
+            return "今日の予定はありません";
         }
-
 
         return events
             .map((event) => {
@@ -54,6 +54,30 @@ export class CalendarService {
                 return `${start} ${title}`;
             })
             .join("\n");
+         
+    }
+
+
+    public listUpcomingText(): string {
+        const events = this.eventsget({ days: 7, maxResults: 10 });
+
+        if (events.length === 0) {
+            return "予定はありません";
+        }
+        return events
+            .map((event) => {
+                const start = Utilities.formatDate(
+                    event.getStartTime(),
+                    "Asia/Tokyo",
+                    "yyyy/MM/dd HH:mm"
+                );
+                const title = event.getTitle();
+                return `${start} ${title}`;
+            })
+            .join("\n");
+
+
+
     }
 
     public createEventFromModal(input: {

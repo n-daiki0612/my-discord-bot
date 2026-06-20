@@ -1,14 +1,15 @@
 const esbuild = require('esbuild');
 const { GasPlugin } = require('esbuild-gas-plugin');
+const path = require('path');
 
 
 esbuild
     .build({
-        entryPoints: ["./src/main.ts"],
+        entryPoints: [path.join(__dirname, "src", "main.ts")],
         bundle: true,
         minify: true,
         target:"es2019",
-        outfile: "./dist/main.js",
+        outfile: path.join(__dirname, "dist", "main.js"),
         plugins: [GasPlugin,
         ],
     })

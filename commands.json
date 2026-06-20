@@ -1,4 +1,3 @@
-
 [
   {
     "name": "ping",
@@ -12,22 +11,27 @@
   },
   {
     "name": "schedule",
-    "description": "スケジュールを確認します",
+    "description": "show upcoming schedule",
     "type": 1
   },
   {
     "name": "schedule_add",
-    "description": "スケジュールを追加します",
+    "description": "add schedule",
     "type": 1
   },
   {
-    "name":"setup",
-    "description":"セットアップの際に実施してください",
-    "type":1
-
+    "name": "setup",
+    "description": "setup GAS connection",
+    "type": 1
   },
-  {"name":"setup_clear",
-  "description":"情報をサーバーより削除します",
-  "type":1
-}
+  {
+    "name": "setup_clear",
+    "description": "clear setup",
+    "type": 1
+  },
+  {
+    "name": "notify_setup",
+    "description": "setup daily notification",
+    "type": 1
+  }
 ]

@@ -61,9 +61,9 @@ export default {
                   label: "GAS Webhook URL",
                   style: 1,
                   required: true,
-                  placeholder: "https://script.google.com/macros/s/.../exec"
-                }
-              ]
+                  placeholder: "https://script.google.com/macros/s/.../exec",
+                },
+              ],
             },
             {
               type: 1,
@@ -74,12 +74,12 @@ export default {
                   label: "PROXY_TOKEN",
                   style: 1,
                   required: true,
-                  placeholder: "32+ random chars"
-                }
-              ]
-            }
-          ]
-        }
+                  placeholder: "32+ random chars",
+                },
+              ],
+            },
+          ],
+        },
       }, 200);
     }
 
@@ -127,12 +127,50 @@ export default {
       }, 200);
     }
 
+    if (interaction.type === 2 && interaction.data?.name === "notify_setup") {
+      return json({
+        type: 9,
+        data: {
+          custom_id: "notify_setup_modal",
+          title: "Notification Setup",
+          components: [
+            {
+              type: 1,
+              components: [
+                {
+                  type: 4,
+                  custom_id: "discordWebhookUrl",
+                  label: "Discord Webhook URL",
+                  style: 1,
+                  required: true,
+                  placeholder: "https://discord.com/api/webhooks/...",
+                },
+              ],
+            },
+            {
+              type: 1,
+              components: [
+                {
+                  type: 4,
+                  custom_id: "notifyTime",
+                  label: "Notify Time",
+                  style: 1,
+                  required: true,
+                  placeholder: "Example: 08:00",
+                },
+              ],
+            },
+          ],
+        },
+      }, 200);
+    }
+
     if (interaction.type === 2 && interaction.data?.name === "schedule_add") {
       return json({
         type: 9,
         data: {
           custom_id: "schedule_add_modal",
-          title: "予定を追加",
+          title: "Add Schedule",
           components: [
             {
               type: 1,
@@ -140,12 +178,12 @@ export default {
                 {
                   type: 4,
                   custom_id: "title",
-                  label: "タイトル",
+                  label: "Title",
                   style: 1,
                   required: true,
-                  placeholder: "例: 会議"
-                }
-              ]
+                  placeholder: "Example: Meeting",
+                },
+              ],
             },
             {
               type: 1,
@@ -153,12 +191,12 @@ export default {
                 {
                   type: 4,
                   custom_id: "date",
-                  label: "日付",
+                  label: "Date",
                   style: 1,
                   required: true,
-                  placeholder: "例: 2026-05-27"
-                }
-              ]
+                  placeholder: "Example: 2026-05-27",
+                },
+              ],
             },
             {
               type: 1,
@@ -166,12 +204,12 @@ export default {
                 {
                   type: 4,
                   custom_id: "startTime",
-                  label: "開始時刻",
+                  label: "Start Time",
                   style: 1,
                   required: true,
-                  placeholder: "例: 13:00"
-                }
-              ]
+                  placeholder: "Example: 13:00",
+                },
+              ],
             },
             {
               type: 1,
@@ -179,15 +217,15 @@ export default {
                 {
                   type: 4,
                   custom_id: "durationMinutes",
-                  label: "所要時間（分）",
+                  label: "Duration Minutes",
                   style: 1,
                   required: true,
-                  placeholder: "例: 60"
-                }
-              ]
-            }
-          ]
-        }
+                  placeholder: "Example: 60",
+                },
+              ],
+            },
+          ],
+        },
       }, 200);
     }
 
@@ -215,13 +253,10 @@ async function processInteractionInBackground({ env, interaction }) {
     const key = getSettingsKey(interaction);
     const settings = await loadSettings(env, key);
     if (!settings?.gasWebhookUrl || !settings?.proxyToken) {
-      await postFollowup(
-        followupUrl,
-        "Setup not found. Run /setup first.",
-        true
-      );
+      await postFollowup(followupUrl, "Setup not found. Run /setup first.", true);
       return;
     }
+
     const gasResponse = await fetch(settings.gasWebhookUrl, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -314,7 +349,7 @@ function getSettingsKey(interaction) {
   if (interaction.guild_id) {
     return `guild:${interaction.guild_id}`;
   }
-  else if (interaction.user?.id || interaction.member?.user?.id) {
+  if (interaction.user?.id || interaction.member?.user?.id) {
     const userId = interaction.member?.user?.id ?? interaction.user?.id;
     return `user:${userId}`;
   }
@@ -335,12 +370,13 @@ function isValidGasWebhookUrl(url) {
 }
 
 function isGuildAdmin(interaction) {
-  if (!interaction.guild_id) return true; // DM は許可
+  if (!interaction.guild_id) return true;
   const permissions = interaction.member?.permissions;
   if (!permissions) return false;
   const ADMINISTRATOR = 1n << 3n;
   return (BigInt(permissions) & ADMINISTRATOR) === ADMINISTRATOR;
 }
+
 async function saveSettings(env, key, settings) {
   const jsonText = JSON.stringify(settings);
   const encrypted = await encryptText(jsonText, env.SETTINGS_ENCRYPTION_KEY);
@@ -363,7 +399,6 @@ async function loadSettings(env, key) {
     return JSON.parse(decrypted);
   }
 
-  // Backward compatibility: old plaintext JSON can still be read.
   if (parsed?.gasWebhookUrl && parsed?.proxyToken) {
     return parsed;
   }

@@ -1,5 +1,11 @@
 {
   "name": "discord-bot",
   "compatibility_date": "2026-06-02",
-  "main": "cloudflare/worker.js"
+  "main": "cloudflare/worker.js",
+  "kv_namespaces": [
+    {
+      "binding": "SETTINGS_KV",
+      "id": "76bb5bf6707a4c05ae338a328ccf018c"
+    }
+  ]
 }
